@@ -1,102 +1,104 @@
-import sample from "lodash/fp/sample";
-import difference from "lodash/fp/difference";
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Button, Box, Text, Flex } from "rebass";
 import { Link, useHistory } from "react-router-dom";
 
 import { setVolume, sing } from "../../services/tone";
+import ParamsConfiguration from "./ParamsConfiguration";
+import {
+  initialState,
+  reducer,
+  init,
+  markYes,
+  markNo,
+  enable,
+  start,
+} from "./store";
 
 function ThresholdDetection({ leftLimit, rightLimit }) {
   const history = useHistory();
-  const [processedVolumes, setProcessed] = useState([]);
-  const [volumeLevel, setVolumeLevel] = useState(rightLimit);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [parameters, setParameters] = useState({
+    volumesNumber: 5,
+    testsPerVolume: 3,
+  });
 
-  const [result, setResult] = useState({});
-  const [progress, setProgress] = useState({});
-  const stepsNumber = 5;
-  const testsPerVolume = 3;
-  const step = (rightLimit - leftLimit) / stepsNumber;
+  useEffect(() => {
+    dispatch(
+      init(
+        leftLimit,
+        rightLimit,
+        parameters.volumesNumber - 1,
+        parameters.testsPerVolume
+      )
+    );
+  }, [parameters]);
 
-  function getRandomLevel() {
-    const targetKeys = difference(Object.keys(result))(processedVolumes);
-    console.log(Object.keys(result));
-    console.log(processedVolumes);
-    console.log(targetKeys);
-
-    let candidate = sample(targetKeys);
-    console.log(`${candidate} - ${progress[candidate]} - ${testsPerVolume}`);
-    if (progress[candidate] === testsPerVolume - 1) {
-      setProcessed([...processedVolumes, candidate]);
+  useEffect(() => {
+    if (!state.isStarted) {
+      return () => {};
     }
+    setVolume(state.volumeLevel);
+    sing();
+    const timer = setTimeout(() => dispatch(enable()), 1300);
+    return () => clearTimeout(timer);
+  }, [state.currentTry]);
 
-    return candidate;
+  function onParamsChange(data) {
+    console.log(data);
+    setParameters(data);
   }
 
-  useEffect(() => {
-    const initialState = {};
-    for (let i = leftLimit; i <= rightLimit; i += step) {
-      initialState[i] = 0;
-    }
-    setResult(initialState);
-    setProgress(initialState);
-
-    console.log(step);
-    console.log();
-  }, []);
-
-  useEffect(() => {
-    sing();
-  }, [volumeLevel]);
-
   function onStart() {
-    const randomLevel = getRandomLevel();
-    setVolumeLevel(randomLevel);
+    dispatch(start());
   }
 
   function onYes() {
-    const randomLevel = getRandomLevel();
-    setResult({ ...result, [volumeLevel]: result[volumeLevel] + 1 });
-    setProgress({ ...progress, [volumeLevel]: progress[volumeLevel] + 1 });
-    setVolumeLevel(randomLevel);
+    dispatch(markYes());
   }
 
   function onNo() {
-    const randomLevel = getRandomLevel();
-    setProgress({ ...progress, [volumeLevel]: progress[volumeLevel] + 1 });
-    setVolumeLevel(randomLevel);
+    dispatch(markNo());
   }
 
-  // console.log(progress);
-
-  if (Object.values(progress).every((x) => x === testsPerVolume)) {
-    return null;
-  }
+  const isSoundButtonsDisabled = state.isDisabled || state.isFinished;
 
   return (
     <Box>
+      <ParamsConfiguration
+        isDisabled={state.isStarted}
+        volumesNumber={parameters.volumesNumber}
+        testsPerVolume={parameters.testsPerVolume}
+        onChange={onParamsChange}
+      />
       <Box>
         <ul>
-          {Object.keys(progress).map((i) => (
+          {Object.keys(state.progress).map((i) => (
             <li key={i}>
-              {i}: {progress[i]} / {result[i]}
+              {i}: {state.progress[i]} / {state.result[i]}
             </li>
           ))}
         </ul>
       </Box>
       <Box>
-        <Button mr="20px" onClick={onStart}>
+        Прослушанно {state.currentTry} звуков из{" "}
+        {parameters.volumesNumber * parameters.testsPerVolume}
+      </Box>
+      <Box>
+        <Button disabled={state.isStarted} mr="20px" onClick={onStart}>
           Начать
         </Button>
       </Box>
-      <Box>
-        <Button mr="20px" onClick={onYes}>
+      <Box my="20px">
+        <Button disabled={isSoundButtonsDisabled} mr="20px" onClick={onYes}>
           Слышно
         </Button>
-        <Button mr="20px" onClick={onNo}>
+        <Button disabled={isSoundButtonsDisabled} mr="20px" onClick={onNo}>
           Не слышно
         </Button>
       </Box>
+      {state.isFinished && (
+        <Box>Тесты закончились, переходите на следующий шаг</Box>
+      )}
       <Box>
         <Button mr="20px" onClick={() => history.goBack()}>
           Назад

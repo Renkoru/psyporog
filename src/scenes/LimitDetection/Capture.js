@@ -22,7 +22,7 @@ function Capture({ onLimitsSet }) {
   const [leftLimit, setLeftLimit] = useState(null);
   const [rightLimit, setRightLimit] = useState(null);
   const [volumeLevel, dispatch] = useReducer(reducer, 0);
-  const volumeStep = 0.5;
+  const volumeStep = 1;
 
   useEffect(() => {
     setVolume(volumeLevel);

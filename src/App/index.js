@@ -15,7 +15,7 @@ import {
 } from "../scenes";
 
 function App() {
-  const [limits, setLimits] = useState([-30, -20]);
+  const [limits, setLimits] = useState([0, 1]);
   function onLimitsSet(newLimits) {
     setLimits(newLimits);
   }

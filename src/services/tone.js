@@ -7,7 +7,7 @@ function setVolume(value) {
 }
 
 function sing() {
-  synth.triggerAttackRelease("C4", 0.5);
+  synth.triggerAttackRelease("C4", 0.3);
 }
 
 export { setVolume, sing };
