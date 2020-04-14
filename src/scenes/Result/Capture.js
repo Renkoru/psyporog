@@ -78,10 +78,10 @@ function Capture({ onLimitsSet }) {
       </Flex>
       <Flex mt="20px" justifyContent="center">
         <Button variant="secondary" mr="10px" width="10em" onClick={onFixLeft}>
-          Зафиксировать слева {leftLimit && `(${leftLimit})`}
+          Замер 1 {leftLimit && `(${leftLimit})`}
         </Button>
         <Button variant="secondary" width="10em" onClick={onFixRight}>
-          Зафиксировать справа {rightLimit && `(${rightLimit})`}
+          Замер 2 {rightLimit && `(${rightLimit})`}
         </Button>
       </Flex>
     </Box>

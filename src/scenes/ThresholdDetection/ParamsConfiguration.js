@@ -3,6 +3,8 @@ import React from "react";
 import { Button, Box, Text, Flex } from "rebass";
 import { Label, Input, Select } from "@rebass/forms";
 
+import FormInput from "../../components/FormInput";
+
 function ParamsConfiguration({
   volumesNumber,
   testsPerVolume,
@@ -28,30 +30,26 @@ function ParamsConfiguration({
   }
 
   return (
-    <Box width="220px">
-      <Flex>
-        <Label htmlFor="volumesNumber">Всего уровней</Label>
-        <Input
-          disabled={isDisabled}
-          sx={{ maxWidth: "50px" }}
+    <Flex>
+      <Box width="220px">
+        <FormInput
+          label="Всего уровней"
           name="volumesNumber"
-          type="number"
           value={volumesNumber}
-          onChange={onParamsChange}
-        />
-      </Flex>
-      <Flex>
-        <Label htmlFor="testsPerVolume">Тестов на значение</Label>
-        <Input
-          disabled={isDisabled}
-          sx={{ maxWidth: "50px" }}
-          name="testsPerVolume"
           type="number"
-          value={testsPerVolume}
           onChange={onParamsChange}
+          isDisabled={isDisabled}
         />
-      </Flex>
-    </Box>
+        <FormInput
+          label="Тестов на значение"
+          name="testsPerVolume"
+          value={testsPerVolume}
+          type="number"
+          onChange={onParamsChange}
+          isDisabled={isDisabled}
+        />
+      </Box>
+    </Flex>
   );
 }
 

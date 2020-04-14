@@ -9,13 +9,13 @@
 // };
 
 const colors2 = {
-  primary: "#30323d",
-  primaryLight: "#595b67",
-  primaryDark: "#080a17",
-  secondary: "#8adaff",
-  secondaryLight: "#beffff",
-  secondaryDark: "#55a8cc",
-  error: "#b00020",
+  primary: "#81C784",
+  primaryLight: "#AED581",
+  primaryDark: "#4DB6AC",
+  secondary: "#4DB6AC",
+  secondaryLight: "#DCE775",
+  secondaryDark: "#4DD0E1",
+  error: "#E57373",
   delimeter: "#f0f0f0",
 };
 
@@ -29,6 +29,7 @@ export default {
     textonp: "white",
     textons: "black",
     bitbucket: "#0747a6",
+    grey: "#90A4AE",
   },
   radii: {
     default: 4,

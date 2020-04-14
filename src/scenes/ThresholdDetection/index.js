@@ -2,8 +2,11 @@ import React, { useEffect, useState, useReducer } from "react";
 import { Button, Box, Text, Flex } from "rebass";
 import { Link, useHistory } from "react-router-dom";
 
+import Navigator from "../../components/Navigator";
 import { setVolume, sing } from "../../services/tone";
 import ParamsConfiguration from "./ParamsConfiguration";
+import ProcessDetails from "./ProcessDetails";
+
 import {
   initialState,
   reducer,
@@ -14,12 +17,12 @@ import {
   start,
 } from "./store";
 
-function ThresholdDetection({ leftLimit, rightLimit }) {
+function ThresholdDetection({ leftLimit, rightLimit, onResult }) {
   const history = useHistory();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [parameters, setParameters] = useState({
     volumesNumber: 5,
-    testsPerVolume: 3,
+    testsPerVolume: 6,
   });
 
   useEffect(() => {
@@ -60,26 +63,29 @@ function ThresholdDetection({ leftLimit, rightLimit }) {
     dispatch(markNo());
   }
 
+  function onNext() {
+    onResult(state.result);
+    history.push("/psyporog/result");
+  }
+
   const isSoundButtonsDisabled = state.isDisabled || state.isFinished;
 
   return (
-    <Box>
+    <Flex
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      alignContent="center"
+    >
       <ParamsConfiguration
         isDisabled={state.isStarted}
         volumesNumber={parameters.volumesNumber}
         testsPerVolume={parameters.testsPerVolume}
         onChange={onParamsChange}
       />
-      <Box>
-        <ul>
-          {Object.keys(state.progress).map((i) => (
-            <li key={i}>
-              {i}: {state.progress[i]} / {state.result[i]}
-            </li>
-          ))}
-        </ul>
-      </Box>
-      <Box>
+      <ProcessDetails progress={state.progress} result={state.result} />
+
+      <Box my="10px" fontWeight="bold">
         Прослушанно {state.currentTry} звуков из{" "}
         {parameters.volumesNumber * parameters.testsPerVolume}
       </Box>
@@ -89,23 +95,36 @@ function ThresholdDetection({ leftLimit, rightLimit }) {
         </Button>
       </Box>
       <Box my="20px">
-        <Button disabled={isSoundButtonsDisabled} mr="20px" onClick={onYes}>
-          Слышно
-        </Button>
-        <Button disabled={isSoundButtonsDisabled} mr="20px" onClick={onNo}>
+        <Button
+          width="8em"
+          disabled={isSoundButtonsDisabled}
+          mr="20px"
+          onClick={onNo}
+        >
           Не слышно
+        </Button>
+        <Button
+          width="8em"
+          disabled={isSoundButtonsDisabled}
+          mr="20px"
+          onClick={onYes}
+        >
+          Слышно
         </Button>
       </Box>
       {state.isFinished && (
         <Box>Тесты закончились, переходите на следующий шаг</Box>
       )}
-      <Box>
-        <Button mr="20px" onClick={() => history.goBack()}>
-          Назад
-        </Button>
-        <Link to="/psyporog/result">Далее</Link>
+
+      <Box width="100%">
+        <Navigator>
+          <Button mr="20px" onClick={() => history.goBack()}>
+            Назад
+          </Button>
+          <Button onClick={onNext}>Далее</Button>
+        </Navigator>
       </Box>
-    </Box>
+    </Flex>
   );
 }
 
