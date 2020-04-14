@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Initial() {
   return (
     <Flex>
-      <Link to="/limit-detection">Начать</Link>
+      <Link to="/psyporog/limit-detection">Начать</Link>
     </Flex>
   );
 }

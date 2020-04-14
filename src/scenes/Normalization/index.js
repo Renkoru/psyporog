@@ -10,7 +10,7 @@ function Normalization() {
       <Button mr="20px" onClick={() => history.goBack()}>
         Назад
       </Button>
-      <Link to="/">Сначала</Link>
+      <Link to="/psyporog/">Сначала</Link>
     </div>
   );
 }

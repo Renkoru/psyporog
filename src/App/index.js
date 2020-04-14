@@ -24,15 +24,19 @@ function App() {
     <Router>
       <div>
         <Switch>
-          <Route path="/" exact component={Initial} />
-          <Route path="/limit-detection" exact>
+          <Route path="/psyporog/" exact component={Initial} />
+          <Route path="/psyporog/limit-detection" exact>
             <LimitDetection onLimitsSet={onLimitsSet} />
           </Route>
-          <Route path="/threshold-detection" exact>
+          <Route path="/psyporog/threshold-detection" exact>
             <ThresholdDetection leftLimit={limits[0]} rightLimit={limits[1]} />
           </Route>
-          <Route path="/result" exact component={Result} />
-          <Route path="/normalization" exact component={Normalization} />
+          <Route path="/psyporog/result" exact component={Result} />
+          <Route
+            path="/psyporog/normalization"
+            exact
+            component={Normalization}
+          />
 
           {/* <Redirect from="/" to={routes.studentList} /> */}
 

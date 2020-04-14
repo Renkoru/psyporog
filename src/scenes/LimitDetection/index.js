@@ -34,7 +34,7 @@ function LimitDetection({ onLimitsSet }) {
         <Button mr="20px" onClick={() => history.goBack()}>
           Назад
         </Button>
-        <Link to="/threshold-detection">Далее</Link>
+        <Link to="/psyporog/threshold-detection">Далее</Link>
       </Box>
     </Box>
   );

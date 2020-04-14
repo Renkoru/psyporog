@@ -11,7 +11,7 @@ function Result() {
         <Button mr="20px" onClick={() => history.goBack()}>
           Назад
         </Button>
-        <Link to="/normalization">Далее</Link>
+        <Link to="/psyporog/normalization">Далее</Link>
       </Box>
     </div>
   );

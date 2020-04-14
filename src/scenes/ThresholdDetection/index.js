@@ -103,7 +103,7 @@ function ThresholdDetection({ leftLimit, rightLimit }) {
         <Button mr="20px" onClick={() => history.goBack()}>
           Назад
         </Button>
-        <Link to="/result">Далее</Link>
+        <Link to="/psyporog/result">Далее</Link>
       </Box>
     </Box>
   );
