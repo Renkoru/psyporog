@@ -33,7 +33,7 @@ function ParamsConfiguration({
     <Flex>
       <Box width="220px">
         <FormInput
-          label="Всего уровней"
+          label="Количество уровней"
           name="volumesNumber"
           value={volumesNumber}
           type="number"
@@ -41,7 +41,7 @@ function ParamsConfiguration({
           isDisabled={isDisabled}
         />
         <FormInput
-          label="Тестов на значение"
+          label="Тестов на каждый уровень"
           name="testsPerVolume"
           value={testsPerVolume}
           type="number"

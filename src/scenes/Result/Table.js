@@ -11,7 +11,7 @@ function Table({ data }) {
           <tr>
             <th>Уровень</th>
             {/* <th>Обработанно</th> */}
-            <th>Услышанно</th>
+            <th>Услышано</th>
           </tr>
         </thead>
         <tbody>

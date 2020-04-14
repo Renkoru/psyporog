@@ -77,6 +77,20 @@ function ThresholdDetection({ leftLimit, rightLimit, onResult }) {
       alignItems="center"
       alignContent="center"
     >
+      <Box mb="20px" width="100%">
+        <Text textAlign="center">
+          Вам будет проигрываться звук со случайной громкостью, диапазон которой
+          мы определили на предыдущем этапе. Этот диапазон сейчас разбит на{" "}
+          <b>{parameters.volumesNumber || "?"}</b> уровней. Можете поменять это
+          значение ниже в 'Количестве уровней'.
+        </Text>
+        <Text textAlign="center">
+          Каждый уровень будет проигран ровно{" "}
+          <b>{parameters.testsPerVolume || "?"}</b> раз. Это значение тоже можно
+          изменить.
+        </Text>
+      </Box>
+
       <ParamsConfiguration
         isDisabled={state.isStarted}
         volumesNumber={parameters.volumesNumber}

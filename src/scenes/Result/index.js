@@ -1,4 +1,5 @@
 import round from "lodash/fp/round";
+import isNull from "lodash/fp/isNull";
 
 import React, { useState } from "react";
 import { Button, Box, Text, Flex } from "rebass";
@@ -65,23 +66,34 @@ function Result({ data }) {
       alignItems="center"
       alignContent="center"
     >
-      <Text>Ваш уровень тот, который вы услышали больше всего раз</Text>
+      <Text mb="15px" textAlign="center">
+        В таблице ниже найдите тот уровень, который вы услышали больше всего раз
+        (колонка "Услышано")
+      </Text>
       <Table data={data} />
 
-      <Text>
-        Теперь можно попробовать перевести этот уровень в децибелы. Для этого
-        вам понадобиться измеритель громкости, можно воспользоваться телефоном с
-        установленным на него приложением.
+      <Text mb="15px" textAlign="center">
+        Можете перевести этот уровень в децибелы. Для этого вам понадобится
+        измеритель громкости (например, приложение Шумометр для телефона).
       </Text>
-      <Text>
-        Нужно будет сделать два замера и указать их уровень в децибелах. (Замер
-        1 должен быть меньше по значению чем Замер 2)
+      <Text mb="15px" textAlign="center">
+        Для расчетов нужно сделать два замера с достаточным уровнем громкости и
+        указать их уровень в децибелах. (Замер 1 должен быть меньше по значению,
+        чем Замер 2. Они должны быть больше 0. Увеличивайте громкость,
+        используюя кнопку "+")
+      </Text>
+      <Text mb="15px" textAlign="center">
+        Чтобы сделать замер, нужно включить Шумометр и, нажимая на кнопку "+",
+        записать его показания на определённом уровне. Эти показания нужно будет
+        внести ниже.
       </Text>
       <Box my="10px">
         <Capture onLimitsSet={onVolumesChange} />
 
         <FormInput
-          label={`Уровень децибел для ${volumesData.volume1 || "?"}`}
+          label={`Уровень децибел для ${
+            isNull(volumesData.volume1) ? "?" : volumesData.volume1
+          }`}
           name="db1"
           value={dbData.db1}
           type="number"
@@ -89,7 +101,9 @@ function Result({ data }) {
         />
 
         <FormInput
-          label={`Уровень децибел для ${volumesData.volume2 || "?"}`}
+          label={`Уровень децибел для ${
+            isNull(volumesData.volume2) ? "?" : volumesData.volume2
+          }`}
           name="db2"
           value={dbData.db2}
           type="number"
